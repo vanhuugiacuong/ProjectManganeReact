@@ -1,14 +1,18 @@
-export const initialProjects = [];
+export const initialProjects = [
+
+];
 
 export function projectsReducer(state, action) {
     switch (action.type) {
-
         case 'ADD_PROJECT':
             return [...state, action.payload];
         case 'EDIT_PROJECT':
             return state.map(p => p.id === action.payload.id ? { ...p, name: action.payload.name } : p);
         case 'DELETE_PROJECT':
             return state.filter(p => p.id !== action.payload.id);
+        case 'LOAD_PROJECTS':
+            return action.payload;
+
         case 'ADD_TASK':
             return state.map(p => p.id === action.payload.projectId
                 ? { ...p, tasks: [...p.tasks, action.payload.task] }
@@ -81,6 +85,8 @@ export function projectsReducer(state, action) {
                 }
                 return p; // Các dự án khác không thay đổi
             });
+
+            
         case 'REORDER_PROJECTS':
             return action.payload;
         default:

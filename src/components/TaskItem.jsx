@@ -5,7 +5,7 @@ import { Fab } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
-function TaskItem({ task, projectId, allProjects , setIsEditingTask }) {
+function TaskItem({ task, projectId, allProjects, setIsEditingTask }) {
   const dispatch = useContext(ProjectsDispatchContext);
   const [isEditing, setIsEditing] = useState(false);
   const [editedTaskName, setEditedTaskName] = useState(task.name);
@@ -34,6 +34,15 @@ function TaskItem({ task, projectId, allProjects , setIsEditingTask }) {
       type: 'MOVE_TASK_BETWEEN_PROJECTS',
       payload: { fromId: projectId, toId: moveToProjectId, taskId: task.id },
     });
+  };
+
+  const handleAddTask = () => {
+    if (!taskName.trim()) return;
+    dispatch({
+      type: 'ADD_TASK',
+      payload: { projectId, task: { id: uuidv4(), name: taskName, done: false } }
+    });
+    setTaskName('');
   };
 
   const handleEditClick = () => {
