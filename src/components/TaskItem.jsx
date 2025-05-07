@@ -1,7 +1,11 @@
 import { useContext, useState } from 'react';
 import { ProjectsDispatchContext } from '../context/ProjectsContext';
+import EditIcon from '@mui/icons-material/Edit';
+import { Fab } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-function TaskItem({ task, projectId, allProjects }) {
+
+function TaskItem({ task, projectId, allProjects , setIsEditingTask }) {
   const dispatch = useContext(ProjectsDispatchContext);
   const [isEditing, setIsEditing] = useState(false);
   const [editedTaskName, setEditedTaskName] = useState(task.name);
@@ -32,6 +36,16 @@ function TaskItem({ task, projectId, allProjects }) {
     });
   };
 
+  const handleEditClick = () => {
+    setIsEditing(true);
+    setIsEditingTask(true); // Thông báo cho App rằng task đang được chỉnh sửa
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setIsEditingTask(false); // Thông báo cho App rằng task không còn được chỉnh sửa
+  };
+
   return (
     <li className="flex items-center justify-between bg-gray-100 rounded-lg p-3">
       <div className="flex items-center gap-3 flex-1">
@@ -44,13 +58,17 @@ function TaskItem({ task, projectId, allProjects }) {
               className="border p-1 rounded flex-1"
             />
             <button onClick={handleEdit} className="bg-blue-500 text-white px-2 py-1 rounded">Lưu</button>
-            <button onClick={() => setIsEditing(false)} className="bg-gray-300 px-2 py-1 rounded">Hủy</button>
+            <button onClick={handleCancelEdit} className="bg-blue-300 px-2 py-1 rounded">Hủy</button>
           </>
         ) : (
           <>
             <span className={`flex-1 ${task.done ? 'line-through text-gray-400' : ''}`}>{task.name}</span>
-            <button onClick={() => setIsEditing(true)} className="text-yellow-600 px-2">✏️</button>
-            <button onClick={handleDelete} className="text-red-500 px-2">🗑️</button>
+            <Fab size='small' onClick={handleEditClick} color="info" aria-label="edit">
+              <EditIcon />
+            </Fab>
+            <Fab size='small' onClick={handleDelete} color="error" aria-label="delete">
+              <DeleteIcon />
+            </Fab>
           </>
         )}
       </div>
@@ -59,7 +77,7 @@ function TaskItem({ task, projectId, allProjects }) {
         <select
           value={moveToProjectId}
           onChange={e => setMoveToProjectId(e.target.value)}
-          className="border p-1 rounded"
+          className="ml-2 border p-1 rounded"
         >
           {allProjects.map(p => (
             <option key={p.id} value={p.id}>{p.name}</option>

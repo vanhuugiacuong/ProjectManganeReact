@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { ProjectsDispatchContext } from "../context/ProjectsContext";
 import { v4 as uuidv4 } from 'uuid';
+import { Button, Input, TextField } from "@mui/material";
 
 function AddProject() {
     const dispatch = useContext(ProjectsDispatchContext);
@@ -13,9 +14,9 @@ function AddProject() {
     }
 
     return (
-        <div className="flex items-center gap-3 mb-4  p-3 rounded-lg ">
-            <input className="" value={name} onChange={e => setProjectName(e.target.value)} placeholder="Tên dự án" />
-            <button className="px-4 rounded bg-gray-400" onClick={handleAdd}>Thêm dự án</button> 
+        <div className="flex text items-center gap-3 mb-4  p-3 rounded-lg ">
+            <Input color="info" value={name} onChange={e => setProjectName(e.target.value)} placeholder="Tên dự án" />
+            <Button variant="contained" className="px-4 rounded bg-gray-400" onClick={handleAdd}>Thêm dự án</Button> 
         </div>
     )
 }
